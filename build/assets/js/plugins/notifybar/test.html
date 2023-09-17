@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>jQuery Notify bar</title>
+    <link rel="stylesheet" href="css/jquery.notifyBar.css">
+    <style type="text/css">
+        .custom {
+            font-size: 20px;
+            color: white;
+            font-family: "Times New Roman", Times, serif;
+            font-style: italic;
+            text-transform: uppercase;
+            background: black url("bg.png") repeat-x top center;
+        }
+
+        button {
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="jquery.notifyBar.js"></script>
+<script>
+    $(function ()
+    {
+
+        $.notifyBar({
+            html: "Autostart"
+        });
+
+        $("#common").click(function ()
+        {
+            $.notifyBar();
+        });
+        $("#error").click(function ()
+        {
+            $.notifyBar({cssClass: "error", html: "Error occurred!"});
+        });
+        $("#success").click(function ()
+        {
+            $.notifyBar({cssClass: "success", html: "Your data has been changed!"});
+        });
+        $("#warning").click(function ()
+        {
+            $.notifyBar({cssClass: "warning", html: "Settings aren't changed!"});
+        })
+        $("#custom").click(function ()
+        {
+            $.notifyBar({cssClass: "custom", html: "Your data has been changed!"});
+        });
+        $("#close").click(function ()
+        {
+            $.notifyBar({html: "Click 'close' to hide notify bar", close: true, waitingForClose: true, closeOnClick: false});
+        });
+        $("#position").click(function ()
+        {
+            $.notifyBar({html: "At bottom", position: "bottom"});
+        });
+
+        $("#events").click(function ()
+        {
+            $.notifyBar({
+                html: "Test events",
+                onBeforeShow: function ()
+                {
+                    $("#onBeforeShow").html("onBeforeShow - ok");
+                },
+                onShow: function ()
+                {
+                    $("#onShow").html("onShow - ok");
+                },
+                onBeforeHide: function ()
+                {
+                    $("#onBeforeHide").html("onBeforeHide - ok");
+                },
+                onHide: function ()
+                {
+                    $("#onHide").html("onHide - ok");
+                }
+            });
+        });
+
+    });
+
+</script>
+</body>
+</html>
+<!-- trololo -->
