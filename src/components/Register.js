@@ -13,7 +13,8 @@ export default function Register() {
 
     }, []);
 
-    let registerUser = () =>{
+    let registerUser = (event) =>{
+        event.preventDefault();
         var data = {
             "username":userName,
             "email":userEmail,
@@ -51,29 +52,29 @@ export default function Register() {
         <div className="container"><br/>
             <h1>Create {headname}</h1>
             <br/>
-            <form className="row g-3 needs-validation">
+            <form className="row g-3 needs-validation" data-parsley-validate onSubmit={ registerUser }>
                 <div className="row">
                     <div className="col-md-4" style={{margin:'auto'}}>
                         <label htmlFor="validationCustom01" className="form-label">Name</label>
-                        <input type="text" className="form-control" defaultValue={ userName } onChange = {(e) => { setuserName(e.target.value) }} placeholder="Enter Name" required/>
+                        <input type="text" className="form-control" data-parsley-required="true" defaultValue={ userName } onChange = {(e) => { setuserName(e.target.value) }} placeholder="Enter Name" />
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-md-4" style={{margin:'auto'}}>
                         <label htmlFor="validationCustomUsername" className="form-label">Email</label>
-                        <input type="text" className="form-control" defaultValue={ userEmail } onChange = {(e) => { setuserEmail(e.target.value) }} placeholder="Enter Email"  required/>
+                        <input type="text" className="form-control" data-parsley-required="true" defaultValue={ userEmail } onChange = {(e) => { setuserEmail(e.target.value) }} placeholder="Enter Email"  />
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-md-4" style={{margin:'auto'}}>
                         <label htmlFor="validationCustomUsername" className="form-label">Password</label>
-                        <input type="password" className="form-control" defaultValue={ userPassword } onChange = {(e) => { setuserPassword(e.target.value) }} placeholder="Enter Password"  required/>
+                        <input type="password" className="form-control" data-parsley-required="true" defaultValue={ userPassword } onChange = {(e) => { setuserPassword(e.target.value) }} placeholder="Enter Password"  />
                     </div>
                 </div><br/><br/><br/><br/><br/>
                 <div className="row">
                     <div className="col-md-4" style={{margin:'auto'}}>
-                        <input className="btn btn-primary"  type="button" onClick={ registerUser } value="Register"/>
-                        <p  style={{float:'right'}}>Already have an account? <Link to="/">Login</Link></p>
+                        <input className="btn btn-primary"  type="submit"  value="Register"/>
+                        <p  style={{float:'right'}}>Already have an account? <Link to="/login">Login</Link></p>
                     </div>
                 </div>    
             </form>
