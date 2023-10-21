@@ -19,7 +19,10 @@ export default function Login() {
 
         axios.post(`${process.env.REACT_APP_LOCAL_URL}auth/local`, data)
         .then(response => {
-            localStorage.setItem("user_details", response);
+            localStorage.setItem("user_id", response.data.user.id);
+            localStorage.setItem("user_name", response.data.user.username);
+            localStorage.setItem("user_email", response.data.user.email);
+            localStorage.setItem("user_createat", response.data.user.createdAt);
             localStorage.setItem("jwt_token", response.data.jwt);
             localStorage.setItem("loggedInUser", true);
             nav("/")

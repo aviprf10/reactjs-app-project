@@ -15,6 +15,8 @@ export default function Navbar({name}) {
         nav("/login");
     }
     const auth = localStorage.getItem("loggedInUser");
+    const userName = localStorage.getItem("user_name");
+    //console.log(userName);
     if(auth){
         return (
             <>
@@ -42,11 +44,11 @@ export default function Navbar({name}) {
                                     <Link className="nav-link" to="/contact-us">Contact</Link>
                                 </li>
                             </ul>
-                            <div className="nav-item dropdown" style={{float:'right'}}>
+                            <div className="nav-item dropdown" style={{float:'right', marginRight:'22px'}}>
                                 <Link className="nav-link dropdown-toggle" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Welcome::
+                                    Welcome:: {userName}
                                 </Link>
-                                <ul className="dropdown-menu" style={{marginLeft:'-6rem'}}>
+                                <ul className="dropdown-menu">
                                     <li><Link className="dropdown-item" to="#">Edit Profile</Link></li>
                                     <li><Link className="dropdown-item" to="#">Setting</Link></li>
                                     <li><hr className="dropdown-divider"/></li>

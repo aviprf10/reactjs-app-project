@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Create() {
     var headname = "Friend";
@@ -14,45 +15,60 @@ export default function Create() {
     let createUser = ()=>{
         // console.log(userName);
         // console.log(userEmail);
-        var data = {
-            "data":{
-                "name":userName,
-                "email":userEmail
-            }
-        };
-        fetch('friends',
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        }).then((d)=>{ return d.json(); }).then(d =>{ 
-            if(d.data !== null){
-                Swal.fire(
-                    'Good job!',
-                    'Data saved successfully!',
-                    'success'
-                )
-            }else{
+        try {
+            var data ={
+                    "data": {
+                    "name":userName,
+                    "email":userEmail
+                }
+            };
+           
+            axios.post(`${process.env.REACT_APP_LOCAL_URL}friends`,
+                data,{
+                    headers: {
+                        "Authorization": `Bearer  ${process.env.REACT_APP_TOKEN}`,
+                        "accept": "application/json",
+                        "Content-Type": "application/json",
+                    }}
+                
+            ).then(response =>{
+                console.log("error", response)
+                if(response.data !== null){
+                    Swal.fire(
+                        'Good job!',
+                        'Data saved successfully!',
+                        'success'
+                    )
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: response.error.message,
+                      })
+                }
+              
+                //console.log(d)
+            }).catch((error)=>{
+                console.log(error);
                 Swal.fire({
                     icon: 'error',
-                    title: 'Oops...',
-                    text: d.error.message,
+                    title: error.response.data.error.name,
+                    text: error.response.data.error.message,
                   })
-            }
-          
-            //console.log(d)
-        }).catch((e)=>{
-            //console.log("E " + e);
-        }).finally((all)=>{
-            //console.log("All " + all);
-        });
+            });
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error.message,
+              })
+        }
+        
     }
   return (
     <>
         <div className="container"><br/>
-            <h1>Create Friends without Auth</h1>
+            <h1>Create Friends</h1>
             <div className="d-grid gap-2 d-md-flex justify-content-md-end">
                 <Link to='/friend-list'><button className='btn btn-info'> List {headname}</button></Link>
                 <Link to='/friend-create'><button className='btn btn-primary'> Create {headname}</button></Link>

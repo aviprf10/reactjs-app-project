@@ -21,6 +21,8 @@ import Notfound from './components/Notfound';
 import Register from './components/Register';
 import Login from './components/Login';
 import ProtectedRoutes from './services/ProtectedRoutes';
+import Viewfriend from './components/Friend/Viewfriend';
+import Editfriend from './components/Friend/Editfriend';
 
  
 
@@ -41,10 +43,12 @@ export default function App() {
                   <Route path="/user-list" element={<Listuser />} />
                   <Route path="/user-create" element={<Createuser />} />
                   <Route path="/contact-us" element={<Contactus />} />
+                  <Route path="/view-friend/:id" element={<Viewfriend />} />
+                  <Route path="/edit-friend/:id" element={<Editfriend />} />
                 </Route>
-                
                 <Route path="*" element={<Notfound />} />
               </Routes>
+              
           </Router>
         );
 

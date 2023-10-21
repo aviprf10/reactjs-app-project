@@ -25,12 +25,6 @@ export default function Register() {
         .post(`${process.env.REACT_APP_LOCAL_URL}auth/local/register`, data)
         .then(response => {
             // Handle success.
-            localStorage.setItem("user_id", response.data.user.id);
-            localStorage.setItem("user_name", response.data.user.username);
-            localStorage.setItem("user_email", response.data.user.email);
-            localStorage.setItem("user_createat", response.data.user.createdAt);
-            localStorage.setItem("jwt_token", response.data.jwt);
-
             Swal.fire(
                 'Good job!',
                 'User register successfully!',
