@@ -69,6 +69,6 @@ window.env = {
   "npm_node_execpath": "/opt/homebrew/Cellar/node/19.4.0_1/bin/node",
   "npm_config_prefix": "/opt/homebrew",
   "COLORTERM": "truecolor",
-  "REACT_APP_LOCAL_URL": "http://localhost:1337/api/",
-  "REACT_APP_TOKEN": "0946da4cddc9effc896297b134c4b7dccd81a94bd1983797c45bf409ec7127a87fb22fc453c891d18a339f4343ecbe974bec00088fad759c04a14af3b240fb89cc7fa4ed23a4ed1c41e1171bb1b986156c9d9e24be725a773a2d7c891ea8a6d85513a6e61bb2fd1407d677fb4318fe9403f1e48e7e81d9f80cbc061bfd04b461"
+  "REACT_APP_LOCAL_URL": "https://strapi-uy7u.onrender.com/v1/",
+  "REACT_APP_TOKEN": "ae0be51681b735d241c335ae96bca07733d48c62ff6babd42fcdd9b34be81ba872b546e6024900563698220729bbc1c8b87650289846bd1ea48a9e89c0109a8c94051ccd1832240a4d24ed2bd4087ca6ad4896dccac9c4453eb6e06097a7e4bfb94875f3d9bd8bb207a43e800e82c1d0e113147a46f8361da42b2a59219391da"
 };

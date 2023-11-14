@@ -5,6 +5,8 @@ import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import Pagination from 'react-bootstrap/Pagination';
+import dateFormat from 'dateformat';
+import Spinner from 'react-bootstrap/Spinner';
 
 export default function List() {
   var name="Friend List";
@@ -12,7 +14,8 @@ export default function List() {
   const [APIData, setAPIData] = useState({ 
     data:[]
   }); //State and HOOK Variable
-  const [paginationItem, setPaginationItem] = useState()
+  const [paginationItem, setPaginationItem] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const renderAfterCalled = useRef(false);
 
   let last = (e) =>{
@@ -59,6 +62,7 @@ export default function List() {
 
   let getFriendData = (e='', pageno=1) => {
       try {
+        setIsLoading(true);
         axios({
             url: `${process.env.REACT_APP_LOCAL_URL}friends?sort[0]=id:desc&pagination[page]=${pageno}&pagination[pageSize]=10`,
             method:"get", 
@@ -78,7 +82,8 @@ export default function List() {
           for(let i=start; i <= pageCount; i++){
             arr.push(<Pagination.Item onClick={(e)=>{ gotoPage(e, i) }}>{i}</Pagination.Item>);
           }
-          setPaginationItem(arr)
+          setPaginationItem(arr);
+          setIsLoading(false)
         })
         .catch(error => {
           // Handle error.
@@ -88,6 +93,7 @@ export default function List() {
               title: error.response.data.error.name,
               text: error
             })
+            setIsLoading(false)  
         });
       } catch (error) {
         console.log(error);
@@ -96,11 +102,13 @@ export default function List() {
             title: error,
             text: error,
           })
+        setIsLoading(false)  
       }
   }
 
   let onDelete = (id)=>{
       try {
+        setIsLoading(true);
         Swal.fire({
           title: 'Are you sure?',
           text: "You won't be able to revert this!",
@@ -130,12 +138,14 @@ export default function List() {
                   'success'
                 )
                 getFriendData();
+                setIsLoading(false);
               }else{
                   Swal.fire({
                       icon: 'error',
                       title: 'Oops...',
                       text: response.error.message,
                     })
+                  setIsLoading(false)  
               }
             })
             .catch((error)=>{
@@ -145,6 +155,7 @@ export default function List() {
                     title: error.response.data.error.name,
                     text: error.response.data.error.message,
                   })
+                setIsLoading(false)   
             });
             
           }
@@ -167,40 +178,46 @@ export default function List() {
         <Link to='/friend-list'><button className='btn btn-info'> List {headname}</button></Link>
         <Link to='/friend-create'><button className='btn btn-primary'> Create {headname}</button></Link>
       </div> <br/>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>id</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Created At</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            APIData.data.map(function(currentValue, index, arr){
-              
-               return (
+      {isLoading ? (
+          <div className="d-flex justify-content-center" >
+              <Spinner animation="grow" />
+          </div>
+        ) : (
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>id</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Created At</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              APIData.data.map(function(currentValue, index, arr){
+                var create_at = dateFormat(currentValue.attributes.createdAt, "d-m-yyyy"); 
+                return (
                   
-                    <tr key={currentValue.id}>
-                      <td>{currentValue.id}</td>
-                      <td>{currentValue.attributes.name}</td>
-                      <td>{currentValue.attributes.email}</td>
-                      <td>{currentValue.attributes.createdAt}</td>
-                      <td>
-                        <Link to={`/view-friend/${currentValue.id}`}><Button variant="warning"><i className="fa fa-eye"></i></Button></Link>&nbsp; &nbsp;
-                        <Link to={`/edit-friend/${currentValue.id}`}><Button variant="primary"><i className="fa fa-edit"></i></Button></Link>&nbsp; &nbsp;
-                        <Button variant="danger" onClick= {(e) => { onDelete(currentValue.id) }}><i className="fa fa-trash"></i></Button>
-                      </td>
-                    </tr>
-                  
-                )
-            })
-          }
-          
-        </tbody>
-      </Table>
+                      <tr key={currentValue.id}>
+                        <td>{currentValue.id}</td>
+                        <td>{currentValue.attributes.name}</td>
+                        <td>{currentValue.attributes.email}</td>
+                        <td>{create_at}</td>
+                        <td>
+                          <Link to={`/view-friend/${currentValue.id}`}><Button variant="warning"><i className="fa fa-eye"></i></Button></Link>&nbsp; &nbsp;
+                          <Link to={`/edit-friend/${currentValue.id}`}><Button variant="primary"><i className="fa fa-edit"></i></Button></Link>&nbsp; &nbsp;
+                          <Button variant="danger" onClick= {(e) => { onDelete(currentValue.id) }}><i className="fa fa-trash"></i></Button>
+                        </td>
+                      </tr>
+                    
+                  )
+              })
+            }
+            
+          </tbody>
+        </Table>
+      )}
       <Pagination style={{float:'right'}}>
         <Pagination.First onClick={(e)=>{ first(e); }}/>
         <Pagination.Prev onClick={(e)=>{ prev(e); }}/>
@@ -209,7 +226,7 @@ export default function List() {
         }
         <Pagination.Next onClick={(e)=>{ next(e); }}/>
         <Pagination.Last onClick={(e)=>{ last(e); }}/> 
-      </Pagination>
+      </Pagination> 
     </div>
     </>
   )
